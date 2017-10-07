@@ -165,9 +165,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
                     ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.container);
                     viewPager.setCurrentItem(1);
                     break;
-
         }
-
     }
 
     /**
