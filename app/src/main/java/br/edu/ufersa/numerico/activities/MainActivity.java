@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity implements Tab1.interfaceDat
     }
 
     @Override
-    public void sendMatrix(double[][] matrix, double error) {
+    public void sendMatrix(double[][] matrix, double error, int maxIterations) {
         Tab2 frag = (Tab2)getSupportFragmentManager().findFragmentById(R.id.container);
-        frag.updateMatrix(matrix, error);
+        frag.updateMatrix(matrix, error, maxIterations);
     }
 
     /**
@@ -116,8 +116,7 @@ public class MainActivity extends AppCompatActivity implements Tab1.interfaceDat
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_main, container, false);
         }
     }
 

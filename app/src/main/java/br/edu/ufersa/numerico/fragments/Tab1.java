@@ -23,7 +23,7 @@ import br.edu.ufersa.numerico.R;
 
 public class Tab1 extends Fragment implements View.OnClickListener{
     private interfaceDataCommunicator mCallback;
-    private EditText editN, editError, editValue;
+    private EditText editN, editError, editValue, editIterations;
     private TextView txtValue;
     private double[][] matrix;
     private int row, column, size;
@@ -31,43 +31,48 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     private Resources res;
     private ConstraintLayout inputLayout;
     private Button calculate;
+    private View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.tab1, container, false);
     }
 
+
+
     /**
      * Interface de comunicação da matriz
      */
     public interface interfaceDataCommunicator {
-        void sendMatrix(double[][] matrix, double error);
+        void sendMatrix(double[][] matrix, double erro, int maxIterations);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        findViews();
+        findViewsIds();
         size = 0;//inicializar para a IDE parar de  chorar
         res = getActivity().getResources();
 
     }
 
-    private void findViews() {
-        editN = (EditText)getView().findViewById(R.id.editN);
-        editError = (EditText)getView().findViewById(R.id.editError);
-        editValue = (EditText)getView().findViewById(R.id.editValor);
+    private void findViewsIds() {
+        view = getView();
+        editN = (EditText)view.findViewById(R.id.editN);
+        editError = (EditText)view.findViewById(R.id.editError);
+        editValue = (EditText)view.findViewById(R.id.editValor);
+        editIterations = (EditText)view.findViewById(R.id.editMaxNumberOfIterations);
         editValue.setOnClickListener(this);
-        inputLayout = (ConstraintLayout)getView().findViewById(R.id.inputLayout);
+        inputLayout = (ConstraintLayout)view.findViewById(R.id.inputLayout);
 
-        Button ok = (Button)getView().findViewById(R.id.btnOK);
+        Button ok = (Button)view.findViewById(R.id.btnOK);
         ok.setOnClickListener(this);
 
-        calculate = (Button)getView().findViewById(R.id.btnCalcular);
+        calculate = (Button)view.findViewById(R.id.btnCalcular);
         calculate.setOnClickListener(this);
 
-        txtValue = (TextView)getView().findViewById(R.id.txtValue);
-        txtMatrix = (TextView)getView().findViewById(R.id.txtMatrix);
+        txtValue = (TextView)view.findViewById(R.id.txtValue);
+        txtMatrix = (TextView)view.findViewById(R.id.txtMatrix);
 
         //handle the enter of editValue
         editValue.setOnKeyListener(new View.OnKeyListener() {
@@ -156,7 +161,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btnCalcular:
-                    mCallback.sendMatrix(matrix, getError());
+                    mCallback.sendMatrix(matrix, getError(), getMaxIterations());
                     ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.container);
                     viewPager.setCurrentItem(1);
                     break;
@@ -203,8 +208,19 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             error = Double.parseDouble(String.valueOf(editError.getText()));
             return error;
         }catch (Exception e){
-            Toast.makeText(getContext(), res.getString(R.string.wrong_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), res.getString(R.string.wrong_error), Toast.LENGTH_LONG).show();
             return 0.05;
+        }
+    }
+
+    public int getMaxIterations() {
+        int maxInterations;
+        try{
+            maxInterations = Integer.parseInt(String.valueOf(editIterations.getText()));
+            return maxInterations;
+        }catch (Exception e){
+            Toast.makeText(getContext(), res.getString(R.string.wrong_interations), Toast.LENGTH_LONG).show();
+            return 50;
         }
     }
 

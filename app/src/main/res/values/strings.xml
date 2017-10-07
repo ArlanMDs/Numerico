@@ -2,8 +2,13 @@
     <string name="app_name">Gauss Jacobi</string>
     <string name="action_settings">Settings</string>
     <string name="dimension">Dimensões N<small>x</small>N+1:</string>
-    <string name="matrix_position">Digite o X <sub><small>%1$d %2$d</small></sub></string>
-    <string name="new_matrix">Nova Matriz Criada</string>
-    <string name="empty_matrix">Preencha Toda a Matriz</string>
-    <string name="wrong_error">Erro com Formato Errado. O Padrão 0.05 será utilizado</string>
+    <string name="matrix_position">Digite o X <sub><small>%1$d %2$d</small></sub>:</string>
+    <string name="new_matrix">Nova Matriz criada</string>
+    <string name="empty_matrix">Preencha toda a matriz</string>
+    <string name="wrong_error">Erro com formato errado. O padrão 0.05 será utilizado</string>
+    <string name="max_number_of_iterations">Número máximo de iterações:</string>
+    <string name="error">Erro:</string>
+    <string name="wrong_interations">Max. Interações com formato errado. O padrão 50 será utilizado.</string>
+    <string name="calculate">Calcular</string>
+    <string name="dimensions_button">Confirma \\n dimensões</string>
 </resources>

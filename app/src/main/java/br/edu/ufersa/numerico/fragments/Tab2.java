@@ -24,7 +24,7 @@ public class Tab2 extends Fragment {
         
     }
 
-    public void updateMatrix(double[][] matrix, double error) {
+    public void updateMatrix(double[][] matrix, double error, int maxIterations) {
         info.setVisibility(View.GONE);
         log.setText("");
         Jacobi jacobiMatrix = new Jacobi(this, matrix);
@@ -41,7 +41,7 @@ public class Tab2 extends Fragment {
         log.append("\n\nCritério das linhas: "+jacobiMatrix.applyLineCriterion() +"\n\n");
 
         log.append("Iterações:\n\n");
-        jacobiMatrix.solve(error);
+        jacobiMatrix.solve(error, maxIterations);
 
     }
 

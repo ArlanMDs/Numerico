@@ -27,10 +27,7 @@
    5 -2  3 -1
   -3  9  1  2
    2 -1 -7  3
-  The number in the first line is the number of equations
-  and number of variables. You can put this values in a file
-  and then execute the program as follows:
-  $ java Jacobi < equations.txt
+
   If the matrix isn't diagonally dominant the program tries
   to convert it(if possible) by rearranging the rows.
 */
@@ -45,7 +42,6 @@ import br.edu.ufersa.numerico.fragments.Tab2;
 
 public class Jacobi {
 
-    private static final int MAX_ITERATIONS = 50;
     private double[][] M;
     private Tab2 context;
 
@@ -94,8 +90,9 @@ public class Jacobi {
         if (r == M.length) {
             double[][] T = new double[n][n + 1];
             for (int i = 0; i < R.length; i++) {
-                for (int j = 0; j < n + 1; j++)
+                for (int j = 0; j < n + 1; j++) {
                     T[i][j] = M[R[i]][j];
+                }
             }
 
             M = T;
@@ -151,7 +148,7 @@ public class Jacobi {
      * .                 .                  .        .
      * a_n1 * x_n + a_n2 * x_2 + ... + a_nn * x_n = b_n
      */
-    public void solve(double epsilon) {
+    public void solve(double error, int maxIterations) {
         int iterations = 0;
         int n = M.length;
         double[] X = new double[n]; // Approximations
@@ -167,8 +164,6 @@ public class Jacobi {
                     if (j != i)
                         sum -= M[i][j] * P[j];
 
-                // atualiza o x_i e não o usa na próxima linha
-                // mas somente na próxima iteração
                 X[i] = 1 / M[i][i] * sum;
             }
 
@@ -186,10 +181,10 @@ public class Jacobi {
 
             boolean stop = true;
             for (int i = 0; i < n && stop; i++)
-                if (Math.abs(X[i] - P[i]) > epsilon)
+                if (Math.abs(X[i] - P[i]) > error)
                     stop = false;
 
-            if (stop || iterations == MAX_ITERATIONS) break;
+            if (stop || iterations == maxIterations) break;
             P = X.clone();
         }
     }
