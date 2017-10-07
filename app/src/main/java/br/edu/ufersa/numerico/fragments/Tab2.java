@@ -15,7 +15,8 @@ import br.edu.ufersa.numerico.model.Jacobi;
 
 
 public class Tab2 extends Fragment {
-    public TextView log, info;
+    public TextView log;
+    private TextView info;
 
     @Nullable
     @Override

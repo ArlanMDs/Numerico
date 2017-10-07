@@ -43,7 +43,7 @@ import br.edu.ufersa.numerico.fragments.Tab2;
 public class Jacobi {
 
     private double[][] M;
-    private Tab2 context;
+    private final Tab2 context;
 
     public Jacobi(Tab2 context, double[][] matrix){
         this.context = context;
@@ -54,9 +54,9 @@ public class Jacobi {
     public void showMatrix() {
 
         int n = M.length;
-        for (int i = 0; i < n; i++) {
+        for (double[] aM : M) {
             for (int j = 0; j < n + 1; j++)
-                context.log.append(M[i][j] + " ");
+                context.log.append(aM[j] + " ");
             context.log.append("\n\n");
         }
     }
@@ -90,9 +90,7 @@ public class Jacobi {
         if (r == M.length) {
             double[][] T = new double[n][n + 1];
             for (int i = 0; i < R.length; i++) {
-                for (int j = 0; j < n + 1; j++) {
-                    T[i][j] = M[R[i]][j];
-                }
+                System.arraycopy(M[R[i]], 0, T[i], 0, n + 1);
             }
 
             M = T;

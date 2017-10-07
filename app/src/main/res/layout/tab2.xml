@@ -14,18 +14,16 @@
                 android:id="@+id/txtInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:text="Após clicar em calcular, o resultado será exposto aqui.\n" />
+                android:text="@string/log_initial_message"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/txtLog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/txtInfo"
                 android:layout_gravity="center"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:textColor="@android:color/black" />
         </LinearLayout>
     </ScrollView>

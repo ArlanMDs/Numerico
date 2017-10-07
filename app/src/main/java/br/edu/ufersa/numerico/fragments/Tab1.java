@@ -31,7 +31,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     private Resources res;
     private ConstraintLayout inputLayout;
     private Button calculate;
-    private View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,22 +57,22 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     }
 
     private void findViewsIds() {
-        view = getView();
-        editN = (EditText)view.findViewById(R.id.editN);
-        editError = (EditText)view.findViewById(R.id.editError);
-        editValue = (EditText)view.findViewById(R.id.editValor);
-        editIterations = (EditText)view.findViewById(R.id.editMaxNumberOfIterations);
+        View view = getView();
+        editN = (EditText) view.findViewById(R.id.editN);
+        editError = (EditText) view.findViewById(R.id.editError);
+        editValue = (EditText) view.findViewById(R.id.editValor);
+        editIterations = (EditText) view.findViewById(R.id.editMaxNumberOfIterations);
         editValue.setOnClickListener(this);
-        inputLayout = (ConstraintLayout)view.findViewById(R.id.inputLayout);
+        inputLayout = (ConstraintLayout) view.findViewById(R.id.inputLayout);
 
-        Button ok = (Button)view.findViewById(R.id.btnOK);
+        Button ok = (Button) view.findViewById(R.id.btnOK);
         ok.setOnClickListener(this);
 
-        calculate = (Button)view.findViewById(R.id.btnCalcular);
+        calculate = (Button) view.findViewById(R.id.btnCalcular);
         calculate.setOnClickListener(this);
 
-        txtValue = (TextView)view.findViewById(R.id.txtValue);
-        txtMatrix = (TextView)view.findViewById(R.id.txtMatrix);
+        txtValue = (TextView) view.findViewById(R.id.txtValue);
+        txtMatrix = (TextView) view.findViewById(R.id.txtMatrix);
 
         //handle the enter of editValue
         editValue.setOnKeyListener(new View.OnKeyListener() {
@@ -213,7 +213,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    public int getMaxIterations() {
+    private int getMaxIterations() {
         int maxInterations;
         try{
             maxInterations = Integer.parseInt(String.valueOf(editIterations.getText()));
