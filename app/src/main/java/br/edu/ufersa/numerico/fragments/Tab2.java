@@ -37,12 +37,15 @@ public class Tab2 extends Fragment {
             log.append(Html.fromHtml("<font color=#e01515>O sistema é dominante: </font>"));
             log.append("\n\n");
             jacobiMatrix.showMatrix();
+            log.append("Critério das linhas: ");
+            if (jacobiMatrix.lineCriterionIsValid()) {
+                log.append("\n\n");
+                log.append(Html.fromHtml("<font color=#e01515>O critério das linhas garante a convergência. </font>"));
+                log.append("\n\nIterações:\n\n");
+                jacobiMatrix.solve(error, maxIterations);
+            }else
+                log.append(Html.fromHtml("<font color=#e01515>O critério das linhas não garante a convergência. O método não será aplicado. </font>"));
         }
-
-        log.append("\n\nCritério das linhas: "+jacobiMatrix.applyLineCriterion() +"\n\n");
-
-        log.append("Iterações:\n\n");
-        jacobiMatrix.solve(error, maxIterations);
 
     }
 

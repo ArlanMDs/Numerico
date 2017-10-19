@@ -51,7 +51,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViewsIds();
-        size = 0;//inicializar para a IDE parar de  chorar
+        size = 0;
         res = getActivity().getResources();
 
     }
@@ -65,10 +65,10 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         editValue.setOnClickListener(this);
         inputLayout = (ConstraintLayout) view.findViewById(R.id.inputLayout);
 
-        Button ok = (Button) view.findViewById(R.id.btnOK);
-        ok.setOnClickListener(this);
+        Button okDimensions = (Button) view.findViewById(R.id.btnOKDimensions);
+        okDimensions.setOnClickListener(this);
 
-        calculate = (Button) view.findViewById(R.id.btnCalcular);
+        calculate = (Button) view.findViewById(R.id.btnCalculate);
         calculate.setOnClickListener(this);
 
         txtValue = (TextView) view.findViewById(R.id.txtValue);
@@ -79,7 +79,6 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    // Perform action on key press
                     try {
                         if(editValue != null) {
                             insertIntoMatrix(Double.parseDouble(editValue.getText().toString()));
@@ -133,8 +132,11 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btnOK:
-                showLayouts();
+
+            case R.id.btnOKDimensions:
+
+                showInputLayout();
+
                 size = Integer.parseInt(editN.getText().toString());
                 matrix = new double[size][size+1];
                 row = 0;
@@ -143,28 +145,38 @@ public class Tab1 extends Fragment implements View.OnClickListener{
                 Toast.makeText(getContext(), res.getString(R.string.new_matrix), Toast.LENGTH_SHORT).show();
                 txtMatrix.setText("");
 
-                //tentar esconder o teclado
-                try{
-                    // Check if no view has focus:
-                    View view = getActivity().getCurrentFocus();
-                    if (view != null) {
-                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if (imm != null) {
-                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                        }
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+                hideKeyboard();
 
                 break;
 
-            case R.id.btnCalcular:
-                    mCallback.sendMatrix(matrix, getError(), getMaxIterations());
-                    ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.container);
-                    viewPager.setCurrentItem(1);
-                    break;
+            case R.id.btnCalculate:
+
+                //send data
+                mCallback.sendMatrix(matrix, getError(), getMaxIterations());
+                //swipe to results tab
+                ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.container);
+                viewPager.setCurrentItem(1);
+
+                break;
+        }
+    }
+
+    /**
+     * hide keyboard if visible
+     */
+    private void hideKeyboard(){
+        try{
+            // Check if no view has focus:
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -195,7 +207,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     /**
      * mostra os layouts ocultos
      */
-    private void showLayouts(){
+    private void showInputLayout(){
         inputLayout.setVisibility(View.VISIBLE);
         calculate.setVisibility(View.VISIBLE);
     }
@@ -212,12 +224,12 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     }
 
     private int getMaxIterations() {
-        int maxInterations;
+        int maxIterations;
         try{
-            maxInterations = Integer.parseInt(String.valueOf(editIterations.getText()));
-            return maxInterations;
+            maxIterations = Integer.parseInt(String.valueOf(editIterations.getText()));
+            return maxIterations;
         }catch (Exception e){
-            Toast.makeText(getContext(), res.getString(R.string.wrong_interations), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), res.getString(R.string.wrong_iterations), Toast.LENGTH_LONG).show();
             return 50;
         }
     }

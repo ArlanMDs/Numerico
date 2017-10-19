@@ -34,6 +34,8 @@
 package br.edu.ufersa.numerico.model;
 
 
+import android.text.Html;
+
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
@@ -65,9 +67,10 @@ public class Jacobi {
      * aplica o critério das linhas na matriz
      * @return resultado do critério
      */
-    public String applyLineCriterion(){
+    public boolean lineCriterionIsValid(){
         int n = M.length;
         double alfa[] = new double[n];
+        boolean x = true;
 
         for(int i=0; i < n; i++){
             double sum = 0.0;
@@ -75,14 +78,15 @@ public class Jacobi {
                 if(j != i){
                     sum += Math.abs(M[i][j]) / Math.abs(M[i][i]);
                     alfa[i] = sum;
+                    if (sum >= 1)
+                        x = false;
                 }
             }
         }
-        DecimalFormat df = new DecimalFormat("#.0");
-        for(int i=0; i < alfa.length; i++){
-            alfa[i] = Double.parseDouble(df.format(alfa[i]));
-        }
-        return Arrays.toString(alfa);
+
+        context.log.append("\n\n"+ Arrays.toString(formatArray(alfa)));
+
+        return x;
     }
 
     private boolean transformToDominant(int r, boolean[] V, int[] R){
@@ -151,6 +155,9 @@ public class Jacobi {
         int n = M.length;
         double[] X = new double[n]; // Approximations
         double[] P = new double[n]; // Prev
+        double[] abError = new double[n];
+        DecimalFormat df = new DecimalFormat("#.000");
+
         Arrays.fill(X, 0);
         Arrays.fill(P, 0);
 
@@ -165,12 +172,12 @@ public class Jacobi {
                 X[i] = 1 / M[i][i] * sum;
             }
 
-            context.log.append("X_" + iterations + " = {");
+            context.log.append("\n\nX_" + iterations + " = {");
 
             for (int i = 0; i < n; i++)
-                context.log.append(X[i] + " ");
+                context.log.append(Html.fromHtml(Double.parseDouble(df.format(X[i])) + "<font color=#e01515> ; </font>"));
 
-            context.log.append("} \n\n");
+            context.log.append("}");
 
 
             iterations++;
@@ -178,12 +185,47 @@ public class Jacobi {
                 continue;
 
             boolean stop = true;
-            for (int i = 0; i < n && stop; i++)
-                if (Math.abs(X[i] - P[i]) > error)
-                    stop = false;
 
-            if (stop || iterations == maxIterations) break;
+            //daria para simplificar para um laço só, por enquanto fica assim para ficar mais visível
+            for (int i = 0; i < n; i++)
+                abError[i] = Math.abs(X[i] - P[i]);
+
+            if (getMax(abError) > error)
+                stop = false;
+
+            context.log.append("\n   Erro absoluto: "+ Arrays.toString(formatArray(abError)));
+            context.log.append("\n   Erro relativo: "+ String.valueOf(Double.parseDouble(df.format(getMax(abError)/getMax(X)))));
+
+
+            if (stop || iterations == maxIterations) {
+                break;
+            }
             P = X.clone();
         }
+    }
+
+    /**
+     * returns the highest value in an array
+     * @param inputArray array
+     * @return highest value
+     */
+    private double getMax(double[] inputArray){
+        double maxValue = inputArray[0];
+        for(int i=1;i < inputArray.length;i++){
+            if(inputArray[i] > maxValue){
+                maxValue = inputArray[i];
+            }
+        }
+        return maxValue;
+    }
+
+    private double[] formatArray(double[] array){
+
+        DecimalFormat df = new DecimalFormat("#.000");
+
+        for(int i=0; i < array.length; i++){
+            array[i] = Double.parseDouble(df.format(array[i]));
+        }
+        return array;
     }
 }
